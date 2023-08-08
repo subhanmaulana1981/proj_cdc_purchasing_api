@@ -5,28 +5,46 @@ const bodyParser = require("body-parser");
 
 /* application */
 const app = express();
-const port = 3000;
-/* const server = app.listen(5135, function () {
+const port = 5135;
+const server = app.listen(5135, function () {
     console.log(`server siap melayani klien di port ${port}`);
-}); */
+});
 
-const server = app.listen(port, function () {
-    console.log(`server siap melayani klien di port ${port}`);
+/* socket dot io ninja */
+var socket = require("socket.io");
+var ioServer = socket(server);
+
+// ketika terjadi koneksi
+ioServer.on("connection", function (klien) {
+    console.log(`${klien.id} connected`);
+    // ioServer.send();
+
+    // feedBack broadCast
+    ioServer.emit("pesan", "hi");
+
+    // listener pesan
+    klien.on("pesan", function (data) {
+        console.log(`pesan dari klien ${klien.id}: ${data}`);
+
+        // broadCast response to all klien(s)
+        ioServer.emit("pesan", "1");
+    });
 });
 
 /* middleware (s) */
 
 // cross-origin
-/* const corsOptions = {
+/* const corsOptions = {            
     origin: "http://207.148.122.70:5135"
 } */
-/* const corsOptions = {
-    origin: "http://192.168.100.64:5135",
-    optionSuccessStatus: 200
-} */
 
-// app.use(cors(corsOptions));
-app.use(cors());
+const corsOptions = {
+    origin: "http://127.0.0.1:5135",
+    optionSuccessStatus: 200
+}
+
+app.use(cors(corsOptions));
+// app.use(cors());
 
 // body-parser
 app.use(bodyParser.json());
@@ -35,9 +53,9 @@ app.use(bodyParser.urlencoded({
 }));
 
 // my error handling
-app.use(function (err, req, res) {
+/* app.use(function (err, req, res) {
     console.log(err);
-});
+}); */
 
 /* http method */
 app.get("/api", function (req, res) {
