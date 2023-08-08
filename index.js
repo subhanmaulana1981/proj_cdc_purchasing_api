@@ -14,8 +14,7 @@ const server = app.listen(5135, function () {
 
 // cross-origin
 const corsOptions = {
-    origin: "http://207.148.122.70:5135",
-    optionSuccessStatus: 200
+    origin: "http://207.148.122.70:5135"
 }
 /* const corsOptions = {
     origin: "http://192.168.100.64:5135",
