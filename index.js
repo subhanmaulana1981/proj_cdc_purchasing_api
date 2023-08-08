@@ -5,30 +5,35 @@ const bodyParser = require("body-parser");
 
 /* application */
 const app = express();
-const port = 5135;
-const server = app.listen(5135, function () {
+const port = 3000;
+/* const server = app.listen(5135, function () {
+    console.log(`server siap melayani klien di port ${port}`);
+}); */
+
+const server = app.listen(port, function () {
     console.log(`server siap melayani klien di port ${port}`);
 });
 
 /* middleware (s) */
 
 // cross-origin
-const corsOptions = {
+/* const corsOptions = {
     origin: "http://207.148.122.70:5135"
-}
+} */
 /* const corsOptions = {
     origin: "http://192.168.100.64:5135",
     optionSuccessStatus: 200
 } */
 
-app.use(cors(corsOptions));
-// app.use(cors());
+// app.use(cors(corsOptions));
+app.use(cors());
 
 // body-parser
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ 
     extended: true 
 }));
+
 // my error handling
 app.use(function (err, req, res) {
     console.log(err);
@@ -36,6 +41,6 @@ app.use(function (err, req, res) {
 
 /* http method */
 app.get("/api", function (req, res) {
-    console.log("cdc global informatika | api service");
+    // console.log("cdc global informatika | api service");
     res.send("cdc global informatika | api service");
 })
